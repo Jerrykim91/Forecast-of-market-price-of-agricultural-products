@@ -1,2 +1,2 @@
-# Remind-_Ml
-Remind _Machine learning project
+# Remind-Ml
+Remind Machine learning project
