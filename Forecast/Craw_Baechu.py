@@ -1,18 +1,25 @@
-# 크롤링_ 날씨 
+# 크롤링_ 배추
 #---
 
 #  크롤링 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import urllib.request
 
 # datetime 
 from datetime import datetime
 from datetime import timedelta
 
+
+# 디렉터리 작업용 팩 
+import shutil 
+import win32com.client  # 이거 파일 확장자 변경시 필요 
+
+
 #  분석용 툴 
 import pandas as pd
-import numpy as np
-import time
+# import numpy as np
+import time, os
 
 
 # 드라이버옵션설정 
