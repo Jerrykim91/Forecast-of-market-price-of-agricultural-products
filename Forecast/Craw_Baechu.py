@@ -2,14 +2,13 @@
 #---
 
 #  크롤링 
-from selenium import webdriver
+from selenium import webdriver   # 웹드라이버 
 from selenium.webdriver.common.keys import Keys
 import urllib.request
 
 # datetime 
 from datetime import datetime
 from datetime import timedelta
-
 
 # 디렉터리 작업용 팩 
 import shutil 
@@ -37,5 +36,6 @@ path = './data/chromedriver.exe'
 driver = webdriver.Chrome(path,options=options)
 
 # 드라이버에 진입할 경로 전달
-driver.get("https://www.weather.go.kr/w/weather/now.do")
+path = " "
+driver.get(path)
 time.sleep(1)
