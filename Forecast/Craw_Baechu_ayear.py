@@ -51,8 +51,6 @@ print(date_list, len(date_list))
 # 소매
 # order_path = 'https://www.kamis.or.kr/customer/price/retail/period.do'
 # 도매 
-order_path = 'https://www.kamis.or.kr/customer/price/wholesale/period.do'
-action_path = f'?action=daily&startday={start_date}&endday={end_date}&countycode=&itemcategorycode={itemcategorycode}&itemcode={itemcode}&kindcode={kindcode}&productrankcode={productrankcode}&convert_kg_yn=N'
 #---- 
 
 
@@ -68,6 +66,9 @@ options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
 
 for start_date, end_date in date_list:
     name = 'Baechu_wholesale'
+    order_path = 'https://www.kamis.or.kr/customer/price/wholesale/period.do'
+    action_path = f'?action=daily&startday={start_date}&endday={end_date}&countycode=&itemcategorycode={itemcategorycode}&itemcode={itemcode}&kindcode={kindcode}&productrankcode={productrankcode}&convert_kg_yn=N'
+
     url = order_path + action_path
     print(url)
     
