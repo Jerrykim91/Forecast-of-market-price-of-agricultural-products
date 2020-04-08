@@ -14,155 +14,99 @@ from datetime import timedelta
 import shutil 
 import win32com.client  # 이거 파일 확장자 변경시 필요 
 
-
 #  분석용 툴 
 import pandas as pd
 # import numpy as np
 import time, os
 
-# 함수 
-def crawl_agri(name, day, category, item, kind):
-    """
-    크롤링 함수
-    """
-    # 드라이버 옵션 설정
+# date_list = [('2019-01-01', '2019-03-31'), ('2019-04-01', '2019-06-30'), ('2019-07-01', '2019-09-30'), ('2019-10-01', '2019-12-31')] 
+# print(date_list, len(date_list))
+ 
+# 크롤링 함수 -> 어떤 인자를 받을 것인가? -> 일단은 날짜 
+# 시작 년도 , 년도 개수 입력 
+def craw_func(year,year_len):
+    # 크롤링을 할거에요 -> 당연히 드라이버가 필요
     options = webdriver.ChromeOptions()
-
+    
+    # 드라이버 옵션  
     # options.add_argument('headless') #화면 표시 X
     options.add_argument("disable-gpu")   
     options.add_argument("lang=ko_KR")    
     options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')  # user-agent 
 
-    # 2015 ~ 2019 3개월씩 크롤링 반복 
-    for startday, endday in dayList:
+    # 화면에 표시되도록 진행할까요 ?
 
-        # url : KAMIS 농수산물유통정보 사이트
-        url = f"https://www.kamis.or.kr/customer/price/retail/period.do?action=daily&startday={startday}&endday={endday}&countycode=&itemcategorycode={itemcategorycode}&itemcode={itemcode}&kindcode={kindcode}&productrankcode=1&convert_kg_yn=N"
+    date_list = [] 
+    for i in range(1, year_len+1):
+        # print(year + i)
+        print(i,'턴') # 로그
+        year = year + 1
+        # date_list = [(year+'-01-01', year+'-03-31'), (year+'-04-01', year+'-06-30'), (year+'-07-01', year+'-09-30'), (year+'-10-01', year+'-12-31')] 
+        date_year = [(str(year)+'-01-01', str(year)+'-03-31'), (str(year)+'-04-01', str(year)+'-06-30'), (str(year)+'-07-01', str(year)+'-09-30'), (str(year)+'-10-01', str(year)+'-12-31')] 
+        # print(date_list)
+        date_list.append(date_year)
 
-        # 셀레니움 실행 및 접속
-        driver = webdriver.Chrome('./webdriver/chromedriver.exe', options=options)
-        driver.get(url)
-        time.sleep(2)
+    print(date_list)
 
-        # 파일 저장
-        target = driver.find_element_by_xpath("/html/body/div[1]/div/div[2]/section[3]/div/a")
-        target.click()
-        time.sleep(3)
-        driver.close()  
+    for idx in range(year_len):  
+        print(idx)
+        for start_date , end_date in date_list[idx]:
+            # print('start_date', start_date, 'end_date', end_date)
 
-        # 폴더 만들기
-        path = 'C:/Users/admin/Downloads/'
-        if not os.path.exists(f'{path}data_{name}'):
-            os.mkdir(f'{path}data_{name}')
-        
-        # 파일 이름 변경
-        os.rename(f'{path}가격정보.xls', f'{path}{startday}_{name}.xls')
-        time.sleep(1)
+            order_path = 'https://www.kamis.or.kr/customer/price/wholesale/period.do'
+            action_path = f'?action=daily&startday={start_date}&endday={end_date}&countycode=&itemcategorycode={itemcategorycode}&itemcode={itemcode}&kindcode={kindcode}&productrankcode={productrankcode}&convert_kg_yn=N'
+            # url 결합  
+            url = order_path + action_path
+            print(url)
 
-        # xls 읽기 에러가 난다 -> xlsx로 변경
-        xl = win32com.client.Dispatch("Excel.Application")
-        path = path.replace('/','\\')
-        wb = xl.Workbooks.Open(f'{path}{startday}_{name}.xls')
-        wb.SaveAs(f'{path}data_{name}\\{startday}_{name}.xlsx', FileFormat = 51)
-        wb.Close()
-        xl.Quit()
-        time.sleep(1)
+            # 드라이버 가지고 오기 
+            driver_path = './data/webdriver/chromedriver.exe' 
+            driver = webdriver.Chrome(driver_path, options=options )
 
-        # 파일 삭제
-        path = 'C:/Users/admin/Downloads/'
-        os.remove(f'{path}{startday}_{name}.xls')
-        time.sleep(0.5)
-    
-    ### 폴더 이동하기
-    shutil.move(f'{path}data_{name}', f'{os.getcwd()}/data/data_{name}')
+            # 드라이버를 경로에 전달 
+            driver.get(url)
+            time.sleep(0.5)
 
-def to_dataframe(name):
-    # 파일 목록 가져오기
-    files = os.listdir(f'./data/data_{name}')
+            # 파일 저장 
+            Xpath = "/html/body/div[1]/div/div[2]/section[3]/div/a"
+            target = driver.find_element_by_xpath(Xpath)
+            target.click()
+            time.sleep(3)
+            driver.close() 
 
-    df_result = pd.DataFrame(columns=[0, 1, 'year', 'month', 'day'])
+            # 파일 이름 변경 
+            Downloads_path = 'C:/Users/admin/Downloads/'
+            path = 'C:/Forecast-of-market-price/data/input/'
+            name = 'Baechu_wholesale_func'
+            os.rename(f'{Downloads_path}가격정보.xls', f'{path}{start_date}_{name}.xls')
+            time.sleep(1)
 
-    for file in files:
-        # 엑셀 데이터 프레임 만들기
-        df = pd.read_excel(f'./data/data_{name}/{file}', nrows=2)
-        # 뒤집기
-        df = df.T
-        # 필요없는 데이터 삭제
-        df.drop(index=df.iloc[:3].index, inplace=True)
-        ## 2010~2014년도 더미 에러 추가 코드 : 더미 데이터가 있을 경우 삭제하고 아니면 패스하라.
-        try:
-            df.drop(index=df[df.index.str.contains('Unnamed') == True].index, inplace=True)
-        except:
-            pass    
-        # 파일명에서 연도 가져오기
-        year = file[:4]
-        # 인덱스 리셋하기
-        df = df.reset_index()
-        # 연,월,일 설정
-        df['year'] = year
-        df['month'] = df['index'].dt.month
-        df['day'] = df['index'].dt.day
-        # index 삭제
-        del df['index']
-        df_result = pd.concat([df_result, df])
+            # xls를 xlsx로 변경(에러때문)
+            # 엑셀이 깔려 있어야 진행 가능
+            excel = win32com.client.Dispatch("Excel.Application")
+            path = path.replace('/','\\')
+            # print(path)
+            xlwb = excel.Workbooks.Open(f'{path}{start_date}_{name}.xls')
+            xlwb.SaveAs(f'{path}{start_date}_{name}.xlsx', FileFormat = 51)
+            xlwb.Close()
+            excel.Quit()
+            time.sleep(1)
 
-    # 컬럼명 변경
-    df_result.rename(columns={0:'평균', 1:'평년'}, inplace=True)
+            # 파일 삭제
+            path = 'C:/Forecast-of-market-price/data/input/'
+            os.remove(f'{path}{start_date}_{name}.xls')
+            time.sleep(0.5)
 
-    # 날짜 컬럼 만들기
-    df_result['date'] = pd.to_datetime(df_result[['year','month','day']])
 
-    # # 컬럼 순서 조정
-    df_result = pd.DataFrame(df_result, columns=['date', '평균', '평년'])
 
-    # 데이터 타입 변경, 결측치는 0으로 세팅
-    df_result['평균'] = df_result['평균'].str.replace(',', '').str.replace('-','0').astype(int)
-    df_result['평년'] = df_result['평년'].str.replace(',', '').str.replace('-','0').astype(int)
-
-    # 컬럼명 2차 변경
-    df_result.rename(columns={'평균':f'avg_{name}', '평년':f'avgY_{name}'}, inplace=True)
-
-    # 확인
-    print(df_result.columns)
-    print(df_result.head())
-    print(df_result.shape)
-    print(df_result.dtypes)
-
+def to_dataframe():
+    # 파일 목록 자동화 처리 하기
+    # 데이터 정리하고
     # CSV 파일로 만들기
-    df_result.to_csv(f'./data/result_{name}.csv', encoding="utf-8", index=False)
-
-# #### 변수 설정
-
-# dayList = [
-#     ('2015-01-01', '2015-03-31'), ('2015-04-01', '2015-06-30'), ('2015-07-01', '2015-09-30'), ('2015-10-01', '2015-12-31'),
-#     ('2016-01-01', '2016-03-31'), ('2016-04-01', '2016-06-30'), ('2016-07-01', '2016-09-30'), ('2016-10-01', '2016-12-31'),
-#     ('2017-01-01', '2017-03-31'), ('2017-04-01', '2017-06-30'), ('2017-07-01', '2017-09-30'), ('2017-10-01', '2017-12-31'),
-#     ('2018-01-01', '2018-03-31'), ('2018-04-01', '2018-06-30'), ('2018-07-01', '2018-09-30'), ('2018-10-01', '2018-12-31'),
-#     ('2019-01-01', '2019-03-31'), ('2019-04-01', '2019-06-30'), ('2019-07-01', '2019-09-30'), ('2019-10-01', '2019-12-31')
-# ] # 날짜 리스트
-# name = 'pear' # 품목 이름
-# itemcategorycode = 400  # itemcategorycode : 부류   # 채소류 : 200, 과일류 : 400
-# itemcode = 412  # itemcode : 품목   # 무 : 231, 배추 : 211, 사과 : 411, 파 : 246, 배 : 412
-
-# kindcode = '01' # kindcode : 품종, 없으면 '' # 사과-후지 : 05, 배-신고 : 01
-
-
-# 날짜 리스트
-dayList = [
-    ('2010-01-01', '2010-03-31'), ('2010-04-01', '2010-06-30'), ('2010-07-01', '2010-09-30'), ('2010-10-01', '2010-12-31'),
-    ('2011-01-01', '2011-03-31'), ('2011-04-01', '2011-06-30'), ('2011-07-01', '2011-09-30'), ('2011-10-01', '2011-12-31'),
-    ('2012-01-01', '2012-03-31'), ('2012-04-01', '2012-06-30'), ('2012-07-01', '2012-09-30'), ('2012-10-01', '2012-12-31'),
-    ('2013-01-01', '2013-03-31'), ('2013-04-01', '2013-06-30'), ('2013-07-01', '2013-09-30'), ('2013-10-01', '2013-12-31'),
-    ('2014-01-01', '2014-03-31'), ('2014-04-01', '2014-06-30'), ('2014-07-01', '2014-09-30'), ('2014-10-01', '2014-12-31'),
-    # ('2015-01-01', '2015-03-31'), ('2015-04-01', '2015-06-30'), ('2015-07-01', '2015-09-30'), ('2015-10-01', '2015-12-31'),
-    # ('2016-01-01', '2016-03-31'), ('2016-04-01', '2016-06-30'), ('2016-07-01', '2016-09-30'), ('2016-10-01', '2016-12-31'),
-    # ('2017-01-01', '2017-03-31'), ('2017-04-01', '2017-06-30'), ('2017-07-01', '2017-09-30'), ('2017-10-01', '2017-12-31'),
-    # ('2018-01-01', '2018-03-31'), ('2018-04-01', '2018-06-30'), ('2018-07-01', '2018-09-30'), ('2018-10-01', '2018-12-31'),
-    # ('2019-01-01', '2019-03-31'), ('2019-04-01', '2019-06-30'), ('2019-07-01', '2019-09-30'), ('2019-10-01', '2019-12-31')
-]
+    pass
 
 # 품목 이름
-name = 'moo'
+name = 'Baechu_wholesale_func'
 
 # itemcategorycode : 부류 
 # 채소류 : 200, 과일류 : 400
@@ -170,15 +114,17 @@ itemcategorycode = 200
 
 # itemcode : 품목
 # 무 : 231, 배추 : 211, 사과 : 411, 파 : 246, 배 : 412
-itemcode = 231
+itemcode = 211
 
 # kindcode : 품종, 없으면 ''
 # 사과-후지 : 05, 배-신고 : 01
 kindcode = ''
+# productrankcode : 상품 등급
+productrankcode = 0
 
 
+# -------------- # 
+# 실행 
+craw_func(2000, 10)
 
-
-if __name__ == "__main__":
-    # crawl_agri(name=name, day=dayList, category=itemcategorycode, item=itemcode, kind=kindcode)
-    to_dataframe(name=name)
+# -------------- # 
