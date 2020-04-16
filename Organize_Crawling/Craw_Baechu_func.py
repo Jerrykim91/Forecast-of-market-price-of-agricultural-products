@@ -24,7 +24,7 @@ import time, os
  
 # 크롤링 함수 -> 어떤 인자를 받을 것인가? -> 일단은 날짜 
 # 시작 년도 , 년도 개수 입력 
-def craw_func(year,year_len):
+def craw_func(year,year_len): # 현재 년도 -> (2015-2020)
     # 크롤링을 할거에요 -> 당연히 드라이버가 필요
     options = webdriver.ChromeOptions()
     
@@ -38,9 +38,10 @@ def craw_func(year,year_len):
 
     date_list = [] 
     for i in range(1, year_len+1):
+        print(i)
         # print(year + i)
         print(i,'턴') # 로그
-        year = year + 1
+        # year = year # year = year + 1
         # date_list = [(year+'-01-01', year+'-03-31'), (year+'-04-01', year+'-06-30'), (year+'-07-01', year+'-09-30'), (year+'-10-01', year+'-12-31')] 
         date_year = [(str(year)+'-01-01', str(year)+'-03-31'), (str(year)+'-04-01', str(year)+'-06-30'), (str(year)+'-07-01', str(year)+'-09-30'), (str(year)+'-10-01', str(year)+'-12-31')] 
         # print(date_list)
@@ -125,6 +126,6 @@ productrankcode = 0
 
 # -------------- # 
 # 실행 
-craw_func(2000, 10)
+craw_func(2015, 1)
 
 # -------------- # 
