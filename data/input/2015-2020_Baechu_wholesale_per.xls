@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+	<title>가격정보 - 친환경농산물 - 품목별 엑셀 출력</title>
+	<meta http-equiv="Content-Type" content="application/vnd.ms-excel;charset=utf-8">
+	<style type="text/css">
+		table caption	{ text-align:left; }
+		table th		{ background-color:#eff2f9; }
+		table td		{ mso-number-format:\@; text-align:general; vertical-align:middle; text-align:center; white-space:nowrap; mso-rotate:0; mso-background-source:auto; mso-pattern:auto; color:black; font-size:11.0pt; font-style:normal; text-decoration:none; font-family:"맑은 고딕", monospace; mso-font-charset:129; border:1px; mso-protection:locked visible; mso-style-name:표준; mso-style-id:0; }
+		table td.c		{ text-align:center;}
+		table td.l		{ text-align:left; }
+		table td.r		{ text-align:right; }
+	</style>
+</head>
+<body>
+	<table>
+		<tr>
+			<td	class="data">
+				<table id="data" border="1px">
+					
+					<caption></caption>
+					<colgroup><col><col><col><col><col><col><col><col><col><col><col><col><col><col><col>
+					
+					
+						</colgroup><tbody><tr>
+							<th class="first" scope="col">구분</th>
+							
+								<th scope="col">1월</th>
+							
+								<th scope="col">2월</th>
+							
+								<th scope="col">3월</th>
+							
+								<th scope="col">4월</th>
+							
+								<th scope="col">5월</th>
+							
+								<th scope="col">6월</th>
+							
+								<th scope="col">7월</th>
+							
+								<th scope="col">8월</th>
+							
+								<th scope="col">9월</th>
+							
+								<th scope="col">10월</th>
+							
+								<th scope="col">11월</th>
+							
+								<th scope="col">12월</th>
+							
+							<th class="last" scope="col">연평균</th>
+						</tr>
+	
+						
+						<tr>
+							<td class="first cell_tit1">2015</td>
+							<td>1,543</td>
+							<td>1,500</td>
+							<td>2,136</td>
+							<td>2,500</td>
+							<td>2,948</td>
+							<td>3,481</td>
+							<td>3,314</td>
+							<td>2,755</td>
+							<td>2,797</td>
+							<td>2,915</td>
+							<td>2,562</td>
+							<td>2,500</td>
+							<td class="last">2,598</td>
+						</tr>
+						
+						<tr>
+							<td class="first cell_tit1">2016</td>
+							<td>2,338</td>
+							<td>3,001</td>
+							<td>3,930</td>
+							<td>4,808</td>
+							<td>3,764</td>
+							<td>2,820</td>
+							<td>2,958</td>
+							<td>4,523</td>
+							<td>7,737</td>
+							<td>4,950</td>
+							<td>3,636</td>
+							<td>3,886</td>
+							<td class="last">4,013</td>
+						</tr>
+						
+						<tr>
+							<td class="first cell_tit1">2017</td>
+							<td>4,000</td>
+							<td>4,000</td>
+							<td>4,000</td>
+							<td>3,650</td>
+							<td>2,437</td>
+							<td>2,330</td>
+							<td>3,517</td>
+							<td>5,855</td>
+							<td>6,425</td>
+							<td>3,745</td>
+							<td>2,823</td>
+							<td>3,000</td>
+							<td class="last">3,839</td>
+						</tr>
+						
+						<tr>
+							<td class="first cell_tit1">2018</td>
+							<td>3,023</td>
+							<td>3,944</td>
+							<td>3,999</td>
+							<td>3,996</td>
+							<td>3,342</td>
+							<td>3,013</td>
+							<td>3,579</td>
+							<td>6,144</td>
+							<td>6,441</td>
+							<td>3,925</td>
+							<td>3,045</td>
+							<td>2,500</td>
+							<td class="last">3,893</td>
+						</tr>
+						
+						<tr>
+							<td class="first cell_tit1">2019</td>
+							<td>2,432</td>
+							<td>2,074</td>
+							<td>2,073</td>
+							<td>2,000</td>
+							<td>2,222</td>
+							<td>2,738</td>
+							<td>2,906</td>
+							<td>3,351</td>
+							<td>4,795</td>
+							<td>6,714</td>
+							<td>4,500</td>
+							<td>4,465</td>
+							<td class="last">3,358</td>
+						</tr>
+						
+						<tr>
+							<td class="first cell_tit1">2020</td>
+							<td>4,490</td>
+							<td>4,085</td>
+							<td>4,014</td>
+							<td>4,000</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td class="last">4,162</td>
+						</tr>
+						
+					
+					
+				</tbody>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
