@@ -9,6 +9,7 @@ import time
 print(os.getcwd())
 
 files = os.listdir('./data/input')[:-3] # -3을 한 이유 -> 잘못받아와서 
+
 for num, file in enumerate(files):
     print(file)
     # print(len(file))
